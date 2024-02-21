@@ -63,8 +63,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public boolean deleteEmployee(String id) {
         try {
-            boolean success = employeeRepository.deleteByEmployeeCode(id);
-            return success;
+            Optional<Employee> employee = employeeRepository.findById(id);
+            if(employee.isEmpty()){
+                return false;
+            }
+            employeeRepository.deleteById(id);
+            return true;
         }catch (Exception e){
           return false;
         }
