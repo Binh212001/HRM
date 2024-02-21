@@ -3,6 +3,10 @@ package com.example.hrm.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.sql.Date;
+import java.sql.Time;
 
 @Data
 @Entity
@@ -10,10 +14,17 @@ import lombok.Data;
 public class Attendance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "attendance_id")
     private Long attendanceId;
-    private String date;
-    private String startTime;
-    private String endTime;
+    @Column(name = "date")
+    @DateTimeFormat
+    private Date date;
+    @Column(name = "start_time")
+    @DateTimeFormat
+    private Time startTime;
+    @Column(name = "end_time")
+    @DateTimeFormat
+    private Time endTime;
     private String status; // e.g., "Present", "Absent", "Late", etc.
     @ManyToOne
     @JoinColumn(name = "employee_code")

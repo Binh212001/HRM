@@ -2,6 +2,9 @@ package com.example.hrm.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 @Data
 @Entity
@@ -14,10 +17,8 @@ public class Employee {
     private String email;
     @Column(name = "password")
     private String password;
-    @Column(name = "first_name")
-    private String firstName;
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(name = "full_name")
+    private String fullName;
     @Column(name = "gender")
     private String gender;
     @Column(name = "job_position")
@@ -33,7 +34,10 @@ public class Employee {
     @Column(name = "address")
     private String address;
     @Column(name = "birthday")
-    private String birthday;
+    @DateTimeFormat
+    private Date birthday;
     @Column(name = "tax_code")
     private String taxCode;
+    @Column(name = "image-path")
+    private String imagePath;
 }
