@@ -15,4 +15,5 @@ public interface EmployeeService {
     boolean updateEmployee(String id , Employee employee) throws Exception;
 
     boolean deleteEmployee(String id) throws RuntimeException;
+    boolean deleteManyEmployee(List<String> employeeCode) throws RuntimeException;
 }

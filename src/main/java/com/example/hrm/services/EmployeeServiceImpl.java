@@ -2,6 +2,7 @@ package com.example.hrm.services;
 
 import com.example.hrm.entity.Employee;
 import com.example.hrm.repositories.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +64,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Optional<Employee> oldEmployee = employeeRepository.findById(id);
         if(oldEmployee.isEmpty() ) {
-            throw  new Exception("Can not find employee");
+            return  false;
         }
         oldEmployee.get().setFullName(employee.getFullName());
         oldEmployee.get().setEmail(employee.getEmail());
@@ -78,7 +79,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         oldEmployee.get().setTaxCode(employee.getTaxCode());
 
         employeeRepository.save(oldEmployee.get());
-        return false;
+        return true;
         }catch (RuntimeException e){
             throw  new Exception("Update Error: " + e.getMessage());
         }
@@ -95,6 +96,19 @@ public class EmployeeServiceImpl implements EmployeeService {
             return true;
         }catch (Exception e){
             throw  new RuntimeException("Delete error: " + e.getMessage());
+        }
+    }
+
+    @Transactional
+    @Override
+    public boolean deleteManyEmployee(List<String> employeeCode) throws RuntimeException {
+        try {
+            for(String id : employeeCode) {
+                employeeRepository.deleteById(id);
+            }
+            return  true;
+        }catch (Exception e){
+            throw  new RuntimeException("Error deleting");
         }
     }
 }

@@ -9,5 +9,4 @@ import java.util.List;
 public interface EmployeeRepository extends JpaRepository<Employee , String> {
     List<Employee> findByFullName(String fullName);
     Employee findByEmail(String email);
-    Boolean deleteByEmployeeCode(String code);
 }

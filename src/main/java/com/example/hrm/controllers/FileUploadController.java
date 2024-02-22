@@ -1,11 +1,8 @@
 package com.example.hrm.controllers;
 
-import com.example.hrm.component.DirectoryResolver;
 import com.example.hrm.entity.Employee;
 import com.example.hrm.repositories.EmployeeRepository;
-import com.example.hrm.services.EmployeeService;
 import com.example.hrm.utils.Response;
-import jakarta.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -79,12 +80,25 @@ public class EmployeeController {
     @PutMapping ("/update/{id}")
     public ResponseEntity<Response<Boolean>> updateEmployee(@PathVariable String id , @RequestBody Employee employee)  {
         try {
-            boolean success = employeeService.updateEmployee(id, employee);
-            return ResponseEntity.ok(new Response<Boolean>(success,"OK",200));
+            boolean isSuccess = employeeService.updateEmployee(id, employee);
+            if (isSuccess) {
+                return ResponseEntity.ok(new Response<Boolean>(isSuccess,"OK",200));
+            }
+            return ResponseEntity.ok(new Response<Boolean>(isSuccess,"Can not find employee",400));
         }catch (Exception e) {
             return ResponseEntity.ok(new Response<Boolean>(false,e.getMessage(),400));
         }
 
+    }
+
+    @DeleteMapping("/delete/many")
+    public  ResponseEntity<Response<Boolean>> deleteMany(List<String> employeeCode){
+        try {
+            boolean isSuccess =  employeeService.deleteManyEmployee(employeeCode);
+            return ResponseEntity.ok(new Response<Boolean>(isSuccess,"OK",200));
+        }catch (Exception e) {
+            return ResponseEntity.ok(new Response<Boolean>(false,e.getMessage(),400));
+        }
     }
 
 }
