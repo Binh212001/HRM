@@ -12,7 +12,7 @@ public interface EmployeeService {
     Employee getEmployeeById(String employeeCode) throws RuntimeException;
     Employee saveEmployee(Employee employee) throws Exception;
 
-    boolean updateEmployee(Employee employee) throws RuntimeException;
+    boolean updateEmployee(String id , Employee employee) throws Exception;
 
     boolean deleteEmployee(String id) throws RuntimeException;
 }

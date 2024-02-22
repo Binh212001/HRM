@@ -76,4 +76,15 @@ public class EmployeeController {
 
     }
 
+    @PutMapping ("/update/{id}")
+    public ResponseEntity<Response<Boolean>> updateEmployee(@PathVariable String id , @RequestBody Employee employee)  {
+        try {
+            boolean success = employeeService.updateEmployee(id, employee);
+            return ResponseEntity.ok(new Response<Boolean>(success,"OK",200));
+        }catch (Exception e) {
+            return ResponseEntity.ok(new Response<Boolean>(false,e.getMessage(),400));
+        }
+
+    }
+
 }

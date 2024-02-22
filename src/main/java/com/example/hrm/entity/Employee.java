@@ -28,7 +28,7 @@ public class Employee {
     @Column(name = "manager")
     private String manager;
     @Column(name = "contract_code")
-    private String contract_code;
+    private String contractCode;
     @Column(name = "phone")
     private String phone;
     @Column(name = "address")
