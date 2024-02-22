@@ -76,7 +76,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         oldEmployee.get().setManager(employee.getManager());
         oldEmployee.get().setPassword(employee.getPassword());
         oldEmployee.get().setTaxCode(employee.getTaxCode());
-        oldEmployee.get().setImagePath(employee.getImagePath());
 
         employeeRepository.save(oldEmployee.get());
         return false;
