@@ -2,6 +2,7 @@ package com.example.hrm.services;
 
 import com.example.hrm.entity.Contract;
 import com.example.hrm.entity.Employee;
+import com.example.hrm.models.ContractModel;
 import com.example.hrm.repositories.ContractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,18 +16,22 @@ public class ContractServiceImpl implements ContractService{
     ContractRepository contractRepository;
 
     @Override
-    public List<Contract> getContracts() throws RuntimeException {
+    public List<ContractModel> getContracts() throws RuntimeException {
         try {
-            return contractRepository.findAll();
+            return contractRepository.findAllContracts();
         }catch (Exception e) {
           throw  new RuntimeException("Error getting contract" +e.getMessage());
         }
     }
 
     @Override
-    public Optional<Contract> getContract(String code) throws RuntimeException {
+    public ContractModel getContract(String code) throws RuntimeException {
         try {
-            return contractRepository.findById(code);
+            Optional<ContractModel> data = contractRepository.findByContract(code);
+            if(data.isEmpty()){
+                throw  new RuntimeException("Cannot find contract");
+            }
+            return data.get();
         }catch (Exception e) {
             throw  new RuntimeException("Error getting contract" +e.getMessage());
         }

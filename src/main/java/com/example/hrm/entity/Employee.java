@@ -1,14 +1,18 @@
 package com.example.hrm.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@ToString
 @Entity
 @Table(name = "employees")
+@Builder
 public class Employee {
     @Id
     @Column(name = "employee_code")
@@ -23,8 +27,9 @@ public class Employee {
     private String gender;
     @Column(name = "job_position")
     private String jobPosition;
-    @Column(name = "department_id")
-    private String departmentId;
+    @ManyToOne
+    @JoinColumn(name = "department_code")
+    private Department department;
     @Column(name = "manager")
     private String manager;
     @Column(name = "phone")

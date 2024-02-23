@@ -14,7 +14,6 @@ public class Department {
     private  String departmentCode;
     @Column(name ="department_name")
     private  String departmentName;
-    @OneToMany(mappedBy = "departmentId", cascade = CascadeType.ALL)
-    private List<Employee> employees ;
+
 
 }

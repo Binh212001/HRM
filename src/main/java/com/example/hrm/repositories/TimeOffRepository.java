@@ -10,6 +10,5 @@ import java.util.List;
 @Repository
 public interface TimeOffRepository extends JpaRepository<TimeOff, String> {
 
-    List<Attendance>  findByEmployee(String employee_code);
 
 }

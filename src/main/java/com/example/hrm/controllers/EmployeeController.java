@@ -1,8 +1,10 @@
 package com.example.hrm.controllers;
 
 import com.example.hrm.entity.Employee;
+import com.example.hrm.models.EmployeeModel;
 import com.example.hrm.services.EmployeeService;
 import com.example.hrm.utils.Response;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -54,9 +56,9 @@ public class EmployeeController {
         }
 
     }
-
+@Transactional
     @PostMapping("/new")
-    public ResponseEntity<Response<Employee>> addNewEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<Response<Employee>> addNewEmployee(@RequestBody EmployeeModel employee) {
         try {
             Employee emp = employeeService.saveEmployee(employee);
             return ResponseEntity.ok(new Response<>(emp,"OK",200));
@@ -78,7 +80,7 @@ public class EmployeeController {
     }
 
     @PutMapping ("/update/{id}")
-    public ResponseEntity<Response<Boolean>> updateEmployee(@PathVariable String id , @RequestBody Employee employee)  {
+    public ResponseEntity<Response<Boolean>> updateEmployee(@PathVariable String id , @RequestBody EmployeeModel employee)  {
         try {
             boolean isSuccess = employeeService.updateEmployee(id, employee);
             if (isSuccess) {
