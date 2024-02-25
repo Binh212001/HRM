@@ -56,7 +56,6 @@ public class EmployeeController {
         }
 
     }
-@Transactional
     @PostMapping("/new")
     public ResponseEntity<Response<Employee>> addNewEmployee(@RequestBody EmployeeModel employee) {
         try {

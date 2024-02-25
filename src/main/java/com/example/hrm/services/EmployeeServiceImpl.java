@@ -58,9 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             if(oldEmployee!= null) {
                throw new Exception("Employee is already");
             }
-
-            Optional<Department> employeeDepartment = departmentRepository.findById(employee.getDepartmentId());
-            Employee newEmployee = mapToEmployee(employee, employeeDepartment.get());
+            Employee newEmployee = mapToEmployee(employee);
 
             return employeeRepository.save(newEmployee);
         }catch (RuntimeException e) {
@@ -123,7 +121,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    public Employee  mapToEmployee(EmployeeModel employee , Department dp) {
+    public Employee  mapToEmployee(EmployeeModel employee ) {
+
         return Employee.builder()
                 .employeeCode(employee.getEmployeeCode())
                 .email(employee.getEmail())
@@ -132,7 +131,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .gender(employee.getGender())
                 .birthday(employee.getBirthday())
                 .manager(employee.getManager())
-                .department(dp)
                 .phone(employee.getPhone())
                 .address(employee.getAddress())
                 .jobPosition(employee.getJobPosition())

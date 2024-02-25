@@ -10,6 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+
 public class EmployeeModel {
     private String employeeCode;
     private String email;

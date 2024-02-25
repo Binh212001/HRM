@@ -27,14 +27,13 @@ public class ContractModel {
     private String fullName;
     private String gender;
     private String jobPosition;
-    private String departmentName;
     private String phone;
     private String address;
     private Date birthday;
     private String taxCode;
     private String imagePath;
 
-    public ContractModel(String contractCode, Date dateSign, Date dateEnd, String salaryBasic, String employeeCode, String allowance, String dependentPersonality, String email,  String fullName,  String jobPosition, String departmentName, String manager, String phone, String address, Date birthday, String taxCode, String imagePath) {
+    public ContractModel(String contractCode, Date dateSign, Date dateEnd, String salaryBasic, String employeeCode, String allowance, String dependentPersonality, String email,  String fullName,  String jobPosition, String manager, String phone, String address, Date birthday, String taxCode, String imagePath ,String gender) {
         this.contractCode = contractCode;
         this.dateSign = dateSign;
         this.dateEnd = dateEnd;
@@ -48,7 +47,7 @@ public class ContractModel {
         this.fullName = fullName;
         this.gender = gender;
         this.jobPosition = jobPosition;
-        this.departmentName = departmentName;
+
 
         this.phone = phone;
         this.address = address;
