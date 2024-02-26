@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface AttendanceRepository extends JpaRepository<Attendance,String> {
+public interface AttendanceRepository extends JpaRepository<Attendance,Long> {
 
     @Modifying
     @Transactional
@@ -22,5 +22,6 @@ public interface AttendanceRepository extends JpaRepository<Attendance,String> {
 
     @Query("SELECT new com.example.hrm.models.AttendanceModel(a.attendanceId, a.date, a.startTime, a.endTime, a.status, e.employeeCode,e.fullName) FROM Attendance a INNER JOIN Employee as e on e.employeeCode = a.employee.employeeCode where  a.employee.employeeCode = :employeeCode")
     List<AttendanceModel> findAttendanceByEmployeeCode(String employeeCode);
+
 
 }
