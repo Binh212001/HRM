@@ -3,7 +3,9 @@ package com.example.hrm.repositories;
 import com.example.hrm.entity.TimeOff;
 import com.example.hrm.entity.Employee;
 import com.example.hrm.models.TimeOffModel;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +15,8 @@ import java.util.List;
 @Repository
 public interface TimeOffRepository extends JpaRepository<TimeOff, String> {
 
+    @Modifying
+    @Transactional
     @Query(value = "insert into  TimeOff(id,employee_code ,date ,reason , status) values(:id,:employeeCode,:date,:reason,:status)", nativeQuery = true)
     void saveTimeOff(String id, String employeeCode, String date, String reason, String status);
 

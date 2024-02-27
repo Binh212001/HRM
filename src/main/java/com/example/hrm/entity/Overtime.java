@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 @Entity
-@Table(name = "timeoff")
+@Table(name = "overtime")
 @Data
 public class Overtime {
     @Id
@@ -16,12 +16,14 @@ public class Overtime {
     @ManyToOne
     @JoinColumn(name = "employee_code")
     private Employee employee;
-    @Column(name = "start_date")
-    @DateTimeFormat
-    private Date startDate;
-    @Column(name = "end_date")
-    @DateTimeFormat
-    private Date endDate;
+    @Column(name = "date")
+    private String date;
+    @Column(name = "start_time")
+    private float startTime;
+    @Column(name = "end_time")
+    private float endTime;
+    @Column(name = "actual_hours")
+    private float actualHours;
     @Column(name = "reason")
     private String reason;
     @Column(name = "status")
