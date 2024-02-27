@@ -17,12 +17,8 @@ public class TimeOff{
     @ManyToOne
     @JoinColumn(name = "employee_code")
     private Employee employee;
-    @Column(name = "start_date")
-    @DateTimeFormat
-    private Date startDate;
-    @Column(name = "end_date")
-    @DateTimeFormat
-    private Date endDate;
+    @Column(name = "date")
+    private String date;
     @Column(name = "reason")
     private String reason;
     @Column(name = "status")
