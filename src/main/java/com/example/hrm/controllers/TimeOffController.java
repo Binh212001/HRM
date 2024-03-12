@@ -29,7 +29,8 @@ public class TimeOffController {
     public ResponseEntity<Response<List<TimeOffModel>>> getAllTimeOff() {
         try {
             List<TimeOffModel> data = timeOffService.getAllTimeOff();
-            return ResponseEntity.ok(new Response<>(data, "ok", 200));
+            long count = timeOffService.getCount();
+            return ResponseEntity.ok(new Response<>(count,data, "ok", 200));
         } catch (Exception e) {
             return ResponseEntity.ok(new Response<>(null, e.getMessage(), 400));
         }

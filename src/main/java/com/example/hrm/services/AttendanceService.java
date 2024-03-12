@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface AttendanceService {
 
     Boolean createAttendance(String employeeCode) throws  Exception;
-
     List<AttendanceModel> getAttendance(String employeeCode) throws  Exception;
     String updateAttendance(List<AttendanceModel> attendances) throws Exception;
+    long getCount( ) throws Exception;
 }

@@ -38,4 +38,13 @@ public class TimeOffServiceImpl implements TimeOffService {
             throw  new RuntimeException("Get error: " + e.getMessage());
         }
     }
+
+    @Override
+    public long getCount() throws Exception {
+        try {
+            return timeOffRepository.count();
+        }catch (Exception e) {
+            throw  new RuntimeException("Error getting count" +e.getMessage());
+        }
+    }
 }

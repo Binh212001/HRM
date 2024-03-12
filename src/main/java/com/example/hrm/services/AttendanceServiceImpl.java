@@ -71,6 +71,14 @@ public class AttendanceServiceImpl implements AttendanceService {
             throw new Exception("Error updating");
         }
     }
+    @Override
+    public long getCount() throws Exception {
+        try {
+            return attendanceRepository.count();
+        }catch (Exception e) {
+            throw  new RuntimeException("Error getting count" +e.getMessage());
+        }
+    }
 
 
 }

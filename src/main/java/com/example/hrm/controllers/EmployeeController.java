@@ -19,14 +19,18 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
-    @GetMapping("/all")
-    public ResponseEntity<Response<List<Employee>>> getAllEmployees() {
+    @GetMapping("/all/{page}/{limit}")
+    public ResponseEntity<Response<List<Employee>>> getAllEmployees(@PathVariable int page, @PathVariable int limit) {
         try {
-            List<Employee> employees = employeeService.getEmployees();
+            List<Employee> employees = employeeService.getEmployees(page, limit);
 
-            return ResponseEntity.ok(new Response<>(employees,"OK",200));
+            long count = employeeService.getCount();
+
+            return ResponseEntity.ok(new Response<>(count,employees,"OK",200));
         }catch (RuntimeException e) {
             return (ResponseEntity<Response<List<Employee>>>) ResponseEntity.badRequest();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
 
     }
@@ -36,7 +40,7 @@ public class EmployeeController {
         try {
             List<Employee> employees = employeeService.getEmployeeByName(name);
             return ResponseEntity.ok(new Response<>(employees,"OK",200));
-        }catch (RuntimeException e) {
+        }catch (Exception e) {
             return (ResponseEntity<Response<List<Employee>>>) ResponseEntity.badRequest();
         }
 
@@ -51,7 +55,7 @@ public class EmployeeController {
             }
             return ResponseEntity.ok(new Response<>(employee,"OK",200));
 
-        }catch (RuntimeException e) {
+        }catch (Exception e) {
             return (ResponseEntity<Response<Employee>>) ResponseEntity.badRequest();
         }
 

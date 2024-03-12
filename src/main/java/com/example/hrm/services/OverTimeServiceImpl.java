@@ -3,9 +3,9 @@ package com.example.hrm.services;
 import com.example.hrm.models.OverTimeModel;
 import com.example.hrm.repositories.OverTimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 @Service
 public class OverTimeServiceImpl implements OverTimeService {
@@ -21,10 +21,14 @@ public class OverTimeServiceImpl implements OverTimeService {
         }
     }
 
+
+
     @Override
-    public List<OverTimeModel> getAllOverTime() throws Exception {
+    public List<OverTimeModel> getAllOverTime(int page , int limit) throws Exception {
         try {
-            return overTimeRepository.getAllOT();
+            Pageable pageable = PageRequest.of(page, limit);
+            return overTimeRepository.getAllOT(pageable);
+
         }catch (Exception e) {
             throw  new RuntimeException("Get error: " + e.getMessage());
         }
@@ -33,5 +37,13 @@ public class OverTimeServiceImpl implements OverTimeService {
     @Override
     public List<OverTimeModel> getOvertimeByEmployeeCode(String empCode) throws Exception {
         return null;
+    }
+    @Override
+    public long getCount() throws Exception {
+        try {
+            return overTimeRepository.count();
+        }catch (Exception e) {
+            throw  new RuntimeException("Error getting count" +e.getMessage());
+        }
     }
 }

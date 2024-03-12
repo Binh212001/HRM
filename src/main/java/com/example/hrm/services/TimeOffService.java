@@ -9,4 +9,6 @@ public interface TimeOffService {
     List<TimeOffModel> getAllTimeOff() throws Exception;
 
     List<TimeOffModel> getTimeOffByEmployeeCode(String empCode) throws Exception;
+
+    long getCount() throws Exception;
 }

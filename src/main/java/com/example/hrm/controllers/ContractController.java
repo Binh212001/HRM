@@ -22,8 +22,13 @@ public class ContractController {
 
     @GetMapping("/all")
     public ResponseEntity<Response<List<ContractModel>>> getAllContract() {
-        List<ContractModel> contracts = contractService.getContracts();
-        return ResponseEntity.ok(new Response<>(contracts, "ok", 200));
+        try {
+            List<ContractModel>  contracts = contractService.getContracts();
+            long count = contractService.getCount();
+             return ResponseEntity.ok(new Response<>(count,contracts, "ok", 200));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PostMapping("/save")

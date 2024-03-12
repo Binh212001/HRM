@@ -16,7 +16,7 @@ public class ContractServiceImpl implements ContractService{
     ContractRepository contractRepository;
 
     @Override
-    public List<ContractModel> getContracts() throws RuntimeException {
+    public List<ContractModel> getContracts() throws Exception {
         try {
             return contractRepository.findAllContracts();
         }catch (Exception e) {
@@ -25,7 +25,7 @@ public class ContractServiceImpl implements ContractService{
     }
 
     @Override
-    public ContractModel getContract(String code) throws RuntimeException {
+    public ContractModel getContract(String code) throws Exception {
         try {
             Optional<ContractModel> data = contractRepository.findByContract(code);
             if(data.isEmpty()){
@@ -82,6 +82,15 @@ public class ContractServiceImpl implements ContractService{
             return true;
         }catch (Exception e) {
             throw  new RuntimeException("Error deleting contract" +e.getMessage());
+        }
+    }
+
+    @Override
+    public long getCount() throws Exception {
+        try {
+            return contractRepository.count();
+        }catch (Exception e) {
+            throw  new RuntimeException("Error getting count" +e.getMessage());
         }
     }
 }

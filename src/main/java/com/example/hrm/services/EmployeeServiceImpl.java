@@ -22,11 +22,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     DepartmentRepository departmentRepository;
 
     @Override
-    public List<Employee> getEmployees() {
+    public List<Employee> getEmployees(int page , int limit) {
         try {
-            return employeeRepository.findAll();
-        }catch (RuntimeException e) {
-            throw  new RuntimeException("Get error: " + e.getMessage());
+            return employeeRepository.findAll(limit, page * limit);
+        } catch (Exception e) {
+            throw new RuntimeException("Get error: " + e.getMessage());
 
         }
     }
@@ -35,8 +35,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> getEmployeeByName(String employeeName) {
         try {
             return employeeRepository.findByFullName(employeeName);
-        }catch (RuntimeException e) {
-            throw  new RuntimeException("Get error: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("Get error: " + e.getMessage());
 
         }
     }
@@ -46,8 +46,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             Optional<Employee> employee = employeeRepository.findById(employeeCode);
             return employee.get();
-        }catch (RuntimeException e) {
-            throw  new RuntimeException("Get error: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("Get error: " + e.getMessage());
         }
     }
 
@@ -55,42 +55,43 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee saveEmployee(EmployeeModel employee) throws Exception {
         try {
             Employee oldEmployee = employeeRepository.findByEmail(employee.getEmail());
-            if(oldEmployee!= null) {
-               throw new Exception("Employee is already");
+            if (oldEmployee != null) {
+                throw new Exception("Employee is already");
             }
             Employee newEmployee = mapToEmployee(employee);
 
             return employeeRepository.save(newEmployee);
-        }catch (RuntimeException e) {
-            throw  new RuntimeException("Save error: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("Save error: " + e.getMessage());
         }
     }
 
     @Override
-    public boolean updateEmployee(String id,EmployeeModel employee) throws Exception {
+    public boolean updateEmployee(String id, EmployeeModel employee) throws Exception {
         try {
-            Optional<Department> employeeDepartment = departmentRepository.findById(employee.getDepartmentId());
+            Optional<Department> department = departmentRepository.findById(employee.getDepartmentId());
+            Optional<Employee> oldEmployee = employeeRepository.findById(id);
+            if (oldEmployee.isEmpty()) {
+                return false;
+            }
+            oldEmployee.get().setFullName(employee.getFullName());
+            oldEmployee.get().setEmail(employee.getEmail());
+            oldEmployee.get().setAddress(employee.getAddress());
+            oldEmployee.get().setBirthday(employee.getBirthday());
+            oldEmployee.get().setAddress(employee.getAddress());
+            oldEmployee.get().setGender(employee.getGender());
+            oldEmployee.get().setJobPosition(employee.getJobPosition());
+            if (department.isPresent()) {
+                oldEmployee.get().setDepartment(department.get());
+            }
+            oldEmployee.get().setManager(employee.getManager());
+            oldEmployee.get().setPassword(employee.getPassword());
+            oldEmployee.get().setTaxCode(employee.getTaxCode());
 
-        Optional<Employee> oldEmployee = employeeRepository.findById(id);
-        if(oldEmployee.isEmpty() ) {
-            return  false;
-        }
-        oldEmployee.get().setFullName(employee.getFullName());
-        oldEmployee.get().setEmail(employee.getEmail());
-        oldEmployee.get().setAddress(employee.getAddress());
-        oldEmployee.get().setBirthday(employee.getBirthday());
-        oldEmployee.get().setAddress(employee.getAddress());
-        oldEmployee.get().setGender(employee.getGender());
-        oldEmployee.get().setJobPosition(employee.getJobPosition());
-        oldEmployee.get().setDepartment(employeeDepartment.get());
-        oldEmployee.get().setManager(employee.getManager());
-        oldEmployee.get().setPassword(employee.getPassword());
-        oldEmployee.get().setTaxCode(employee.getTaxCode());
-
-        employeeRepository.save(oldEmployee.get());
-        return true;
-        }catch (RuntimeException e){
-            throw  new Exception("Update Error: " + e.getMessage());
+            employeeRepository.save(oldEmployee.get());
+            return true;
+        } catch (Exception e) {
+            throw new Exception("Update Error: " + e.getMessage());
         }
     }
 
@@ -98,13 +99,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     public boolean deleteEmployee(String id) {
         try {
             Optional<Employee> employee = employeeRepository.findById(id);
-            if(employee.isEmpty()){
+            if (employee.isEmpty()) {
                 return false;
             }
             employeeRepository.deleteById(id);
             return true;
-        }catch (Exception e){
-            throw  new RuntimeException("Delete error: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("Delete error: " + e.getMessage());
         }
     }
 
@@ -112,16 +113,25 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public boolean deleteManyEmployee(List<String> employeeCode) throws RuntimeException {
         try {
-            for(String id : employeeCode) {
+            for (String id : employeeCode) {
                 employeeRepository.deleteById(id);
             }
-            return  true;
-        }catch (Exception e){
-            throw  new RuntimeException("Error deleting");
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting");
         }
     }
 
-    public Employee  mapToEmployee(EmployeeModel employee ) {
+    @Override
+    public long getCount() throws Exception {
+        try {
+            return employeeRepository.count();
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Get count error: " + e.getMessage());
+        }
+    }
+
+    public Employee mapToEmployee(EmployeeModel employee) {
 
         return Employee.builder()
                 .employeeCode(employee.getEmployeeCode())
