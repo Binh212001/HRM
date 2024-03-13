@@ -21,9 +21,9 @@ public class ContractController {
     ContractService contractService;
 
     @GetMapping("/all")
-    public ResponseEntity<Response<List<ContractModel>>> getAllContract() {
+    public ResponseEntity<Response<List<ContractModel>>> getAllContract(@RequestParam("page") int page, @RequestParam("limit") int limit) {
         try {
-            List<ContractModel>  contracts = contractService.getContracts();
+            List<ContractModel>  contracts = contractService.getContracts(page,limit);
             long count = contractService.getCount();
              return ResponseEntity.ok(new Response<>(count,contracts, "ok", 200));
         } catch (Exception e) {

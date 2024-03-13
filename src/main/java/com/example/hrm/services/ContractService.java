@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ContractService {
-    List<ContractModel> getContracts() throws Exception;
+    List<ContractModel> getContracts(int page, int limit) throws Exception;
     ContractModel getContract(String code) throws Exception;
     boolean saveContract(Contract contract) throws Exception;
     boolean updateContract( Contract contract) throws Exception;

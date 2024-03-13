@@ -3,6 +3,8 @@ package com.example.hrm.services;
 import com.example.hrm.models.TimeOffModel;
 import com.example.hrm.repositories.TimeOffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +25,10 @@ public class TimeOffServiceImpl implements TimeOffService {
     }
 
     @Override
-    public List<TimeOffModel> getAllTimeOff() throws Exception {
+    public List<TimeOffModel> getAllTimeOff(int page , int limit) throws Exception {
         try {
-            return timeOffRepository.getAllTimeOff();
+            Pageable pageable = PageRequest.of(page, limit);
+            return timeOffRepository.getAllTimeOff(pageable);
         }catch (Exception e) {
             throw  new RuntimeException("Get error: " + e.getMessage());
         }

@@ -21,8 +21,8 @@ public class AttendanceController {
     AttendanceService anAttendanceService;
 
 
-    @PostMapping("/new/{employeeCode}")
-    public ResponseEntity<Response<Boolean>> createAttendance(@PathVariable String employeeCode){
+    @PostMapping("/new")
+    public ResponseEntity<Response<Boolean>> createAttendance(@RequestParam("employeeCode") String employeeCode){
         try {
             boolean success = anAttendanceService.createAttendance(employeeCode);
             return   ResponseEntity.ok(new Response<>(success, "ok", 200));
@@ -31,8 +31,8 @@ public class AttendanceController {
         }
     }
 
-    @GetMapping("/employee/{employeeCode}")
-    public ResponseEntity<Response<List<AttendanceModel>>> getAttendance(@PathVariable String employeeCode){
+    @GetMapping("/employee")
+    public ResponseEntity<Response<List<AttendanceModel>>> getAttendance(@RequestParam("employeeCode") String employeeCode){
         try {
            List<AttendanceModel> attendance = anAttendanceService.getAttendance(employeeCode);
             return   ResponseEntity.ok(new Response<List<AttendanceModel>>(attendance, "ok", 200));
@@ -49,8 +49,5 @@ public class AttendanceController {
         }catch (Exception e){
             return   ResponseEntity.ok(new Response<Boolean>(false, e.getMessage(), 200));
         }
-
-
     }
-
 }

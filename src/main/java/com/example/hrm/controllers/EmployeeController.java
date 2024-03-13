@@ -19,8 +19,8 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
-    @GetMapping("/all/{page}/{limit}")
-    public ResponseEntity<Response<List<Employee>>> getAllEmployees(@PathVariable int page, @PathVariable int limit) {
+    @GetMapping("/all")
+    public ResponseEntity<Response<List<Employee>>> getAllEmployees(@RequestParam("page") int page, @RequestParam("limit") int limit) {
         try {
             List<Employee> employees = employeeService.getEmployees(page, limit);
 

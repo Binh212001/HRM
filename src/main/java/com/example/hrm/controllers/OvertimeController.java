@@ -26,8 +26,8 @@ public class OvertimeController {
         }
     }
 
-    @GetMapping("/all/{page}/{limit}")
-    public ResponseEntity<Response<List<OverTimeModel>>> getAllTimeOff(@PathVariable int page, @PathVariable int limit) {
+    @GetMapping("/all")
+    public ResponseEntity<Response<List<OverTimeModel>>> getAllTimeOff(@RequestParam("page") int page, @RequestParam("limit") int limit) {
         try {
             List<OverTimeModel> data = overTimeService.getAllOverTime(page, limit);
             long count = overTimeService.getCount();

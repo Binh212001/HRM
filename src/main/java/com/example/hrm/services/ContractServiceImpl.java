@@ -5,6 +5,8 @@ import com.example.hrm.entity.Employee;
 import com.example.hrm.models.ContractModel;
 import com.example.hrm.repositories.ContractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +18,10 @@ public class ContractServiceImpl implements ContractService{
     ContractRepository contractRepository;
 
     @Override
-    public List<ContractModel> getContracts() throws Exception {
+    public List<ContractModel> getContracts(int page , int limit) throws Exception {
         try {
-            return contractRepository.findAllContracts();
+            Pageable pageable = PageRequest.of(page, limit);
+            return contractRepository.findAllContracts(pageable);
         }catch (Exception e) {
           throw  new RuntimeException("Error getting contract" +e.getMessage());
         }

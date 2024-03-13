@@ -26,9 +26,9 @@ public class TimeOffController {
         }
     }
     @GetMapping("/all")
-    public ResponseEntity<Response<List<TimeOffModel>>> getAllTimeOff() {
+    public ResponseEntity<Response<List<TimeOffModel>>> getAllTimeOff(@RequestParam("page") int page, @RequestParam("limit") int limit) {
         try {
-            List<TimeOffModel> data = timeOffService.getAllTimeOff();
+            List<TimeOffModel> data = timeOffService.getAllTimeOff(page, limit);
             long count = timeOffService.getCount();
             return ResponseEntity.ok(new Response<>(count,data, "ok", 200));
         } catch (Exception e) {
