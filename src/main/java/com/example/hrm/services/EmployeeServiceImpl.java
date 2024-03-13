@@ -24,7 +24,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getEmployees(int page , int limit) {
         try {
-            return employeeRepository.findAll(limit, page * limit);
+
+            return employeeRepository.findAll(limit, (page-1 )* limit);
         } catch (Exception e) {
             throw new RuntimeException("Get error: " + e.getMessage());
 
