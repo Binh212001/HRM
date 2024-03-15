@@ -2,7 +2,6 @@ package com.example.hrm.services;
 
 import com.example.hrm.entity.Attendance;
 import com.example.hrm.models.AttendanceModel;
-import com.example.hrm.models.EmployeeModel;
 import com.example.hrm.repositories.AttendanceRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +21,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 
     @Override
-    public Boolean createAttendance(String employeeCode) throws Exception {
+    public void createAttendance(String employeeCode) throws Exception {
 
         try {
             YearMonth currentYearMonth = YearMonth.now();
@@ -40,10 +37,9 @@ public class AttendanceServiceImpl implements AttendanceService {
                 String formattedDate = date.format(formatter);
                 attendanceRepository.saveAttendance(formattedDate, employeeCode, "draft");
             }
-            return true;
 
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new Exception(e.getMessage());
         }
     }
 
@@ -54,29 +50,29 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Transactional
     @Override
-    public String updateAttendance(List<AttendanceModel> attendances) throws Exception {
+    public void updateAttendance(List<AttendanceModel> attendances) throws Exception {
         try {
             for (AttendanceModel atd : attendances) {
                 Optional<Attendance> attendance = attendanceRepository.findById(atd.getAttendanceId());
-                if(attendance.isEmpty()){
-                    return  "Cannot find attendance "+atd.getAttendanceId();
+                if (attendance.isEmpty()) {
+                    throw new Exception("Cannot find attendance " + atd.getAttendanceId());
                 }
                 attendance.get().setStartTime(atd.getStartTime());
                 attendance.get().setEndTime(atd.getEndTime());
                 attendance.get().setStatus(atd.getStatus());
                 attendanceRepository.save(attendance.get());
             }
-            return "Updated";
         } catch (Exception e) {
             throw new Exception("Error updating");
         }
     }
+
     @Override
     public long getCount() throws Exception {
         try {
             return attendanceRepository.count();
-        }catch (Exception e) {
-            throw  new RuntimeException("Error getting count" +e.getMessage());
+        } catch (Exception e) {
+            throw new Exception("Error getting count" + e.getMessage());
         }
     }
 

@@ -1,18 +1,16 @@
 package com.example.hrm.controllers;
 
 import com.example.hrm.entity.Contract;
-import com.example.hrm.entity.Employee;
 import com.example.hrm.models.ContractModel;
 import com.example.hrm.services.ContractService;
-import com.example.hrm.services.EmployeeService;
 import com.example.hrm.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/contract")
@@ -23,39 +21,56 @@ public class ContractController {
     @GetMapping("/all")
     public ResponseEntity<Response<List<ContractModel>>> getAllContract(@RequestParam("page") int page, @RequestParam("limit") int limit) {
         try {
-            List<ContractModel>  contracts = contractService.getContracts(page,limit);
+            List<ContractModel> contracts = contractService.getContracts(page, limit);
             long count = contractService.getCount();
-             return ResponseEntity.ok(new Response<>(count,contracts, "ok", 200));
+            return ResponseEntity.status(HttpStatus.OK).body(new Response<List<ContractModel>>(count, contracts, "ok"));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response<>(null, e.getMessage()));
         }
     }
 
     @PostMapping("/save")
     public ResponseEntity<Response<Boolean>> saveContract(@RequestBody Contract contract) throws Exception {
-        Boolean isSuccess = contractService.saveContract(contract);
-        return ResponseEntity.ok(new Response<>(isSuccess, "ok", 200));
+        try {
+            Boolean isSuccess = contractService.saveContract(contract);
+            if (isSuccess.equals(true)) {
+                return ResponseEntity.status(HttpStatus.OK).body(new Response<Boolean>(isSuccess, "Created"));
+            }
+            return ResponseEntity.ok(new Response<>(isSuccess, "Employee is already exist"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response<>(null, e.getMessage()));
+        }
+
     }
 
     @PutMapping("/update")
     public ResponseEntity<Response<Boolean>> updateContract(@RequestBody Contract contract) throws Exception {
-        Boolean isSuccess = contractService.updateContract(contract);
-        return ResponseEntity.ok(new Response<>(isSuccess, "ok", 200));
+        try {
+            Boolean isSuccess = contractService.updateContract(contract);
+            return ResponseEntity.status(HttpStatus.OK).body(new Response<Boolean>(isSuccess, "OK"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response<>(null, e.getMessage()));
+        }
+
     }
 
     @PostMapping("/delete/{contractCode}")
     public ResponseEntity<Response<Boolean>> deleteContract(@PathVariable String contractCode) throws Exception {
-        Boolean isSuccess = contractService.deleteContract(contractCode);
-        return ResponseEntity.ok(new Response<>(isSuccess, "ok", 200));
+        try {
+            Boolean isSuccess = contractService.deleteContract(contractCode);
+            return ResponseEntity.status(HttpStatus.OK).body(new Response<Boolean>(isSuccess, "OK"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response<>(null, e.getMessage()));
+        }
     }
 
     @GetMapping("/code/{contractCode}")
     public ResponseEntity<Response<ContractModel>> getMyContract(@PathVariable String contractCode) {
         try {
             ContractModel contracts = contractService.getContract(contractCode);
-            return ResponseEntity.ok(new Response<>(contracts, "ok", 200));
+            return ResponseEntity.status(HttpStatus.OK).body(new Response<ContractModel>(contracts, "OK"));
         } catch (Exception e) {
-            return ResponseEntity.ok(new Response<>(null, "Cannot find contract", 400));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response<>(null, e.getMessage()));
         }
 
     }

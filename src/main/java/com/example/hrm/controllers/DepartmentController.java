@@ -4,6 +4,7 @@ import com.example.hrm.entity.Department;
 import com.example.hrm.repositories.DepartmentRepository;
 import com.example.hrm.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +19,10 @@ public class DepartmentController {
     DepartmentRepository departmentRepository;
 
     @GetMapping("/all")
-    public ResponseEntity<Response<List<Department>>> getDepartments(){
+    public ResponseEntity<Response<List<Department>>> getDepartments() {
         List<Department> departments = departmentRepository.findAll();
-        return ResponseEntity.ok(new Response<List<Department>>(departments,"ok",200));
+        return ResponseEntity.status(HttpStatus.OK).body(new Response<List<Department>>(departments, "ok"));
     }
-
 
 
 }

@@ -2,13 +2,12 @@ package com.example.hrm.controllers;
 
 
 import com.example.hrm.models.AttendanceModel;
-import com.example.hrm.models.EmployeeModel;
 import com.example.hrm.services.AttendanceService;
 import com.example.hrm.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,32 +21,36 @@ public class AttendanceController {
 
 
     @PostMapping("/new")
-    public ResponseEntity<Response<Boolean>> createAttendance(@RequestParam("employeeCode") String employeeCode){
+    public ResponseEntity<Response<Boolean>> createAttendance(@RequestParam("employeeCode") String employeeCode) throws Exception {
         try {
-            boolean success = anAttendanceService.createAttendance(employeeCode);
-            return   ResponseEntity.ok(new Response<>(success, "ok", 200));
-        }catch (Exception ex){
-            return  ResponseEntity.ok(new Response<>(false, "Fail", 400));
+            anAttendanceService.createAttendance(employeeCode);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new Response<>(true, "CREATED"));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response<>(false, ex.getMessage()));
         }
     }
 
     @GetMapping("/employee")
-    public ResponseEntity<Response<List<AttendanceModel>>> getAttendance(@RequestParam("employeeCode") String employeeCode){
+    public ResponseEntity<Response<List<AttendanceModel>>> getAttendance(@RequestParam("employeeCode") String employeeCode) {
         try {
-           List<AttendanceModel> attendance = anAttendanceService.getAttendance(employeeCode);
-            return   ResponseEntity.ok(new Response<List<AttendanceModel>>(attendance, "ok", 200));
-        }catch (Exception ex){
-            return  ResponseEntity.ok(new Response<List<AttendanceModel>>(null, "Fail", 400));
+            List<AttendanceModel> attendance = anAttendanceService.getAttendance(employeeCode);
+            return ResponseEntity.status(HttpStatus.OK).body(new Response<List<AttendanceModel>>(attendance, "Ok"));
+
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response<>(null, ex.getMessage()));
+
         }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Response<Boolean>> updateAttendance(@RequestBody List<AttendanceModel> attendances){
+    public ResponseEntity<Response<Boolean>> updateAttendance(@RequestBody List<AttendanceModel> attendances) {
         try {
-           String message =  anAttendanceService.updateAttendance(attendances);
-            return   ResponseEntity.ok(new Response<>(true, message, 200));
-        }catch (Exception e){
-            return   ResponseEntity.ok(new Response<Boolean>(false, e.getMessage(), 200));
+            anAttendanceService.updateAttendance(attendances);
+            return ResponseEntity.status(HttpStatus.OK).body(new Response<Boolean>(true, "Updated"));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response<>(null, e.getMessage()));
+
         }
     }
 }

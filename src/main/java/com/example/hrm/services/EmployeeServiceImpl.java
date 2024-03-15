@@ -7,9 +7,10 @@ import com.example.hrm.repositories.DepartmentRepository;
 import com.example.hrm.repositories.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +23,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     DepartmentRepository departmentRepository;
 
     @Override
-    public List<Employee> getEmployees(int page , int limit) {
+    public List<Employee> getEmployees(int page, int limit) {
         try {
-
-            return employeeRepository.findAll(limit, (page-1 )* limit);
+            Pageable pageable = PageRequest.of(page, limit);
+            return employeeRepository.findAllEmployee(pageable);
         } catch (Exception e) {
             throw new RuntimeException("Get error: " + e.getMessage());
 
@@ -33,7 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getEmployeeByName(String employeeName) {
+    public List<Employee> getEmployeeByName(String employeeName) throws Exception {
         try {
             return employeeRepository.findByFullName(employeeName);
         } catch (Exception e) {
@@ -43,7 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeById(String employeeCode) {
+    public Employee getEmployeeById(String employeeCode) throws Exception {
         try {
             Optional<Employee> employee = employeeRepository.findById(employeeCode);
             return employee.get();
@@ -112,12 +113,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
-    public boolean deleteManyEmployee(List<String> employeeCode) throws RuntimeException {
+    public void deleteManyEmployee(List<String> employeeCode) throws RuntimeException {
         try {
             for (String id : employeeCode) {
                 employeeRepository.deleteById(id);
             }
-            return true;
         } catch (Exception e) {
             throw new RuntimeException("Error deleting");
         }

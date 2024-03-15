@@ -14,31 +14,32 @@ public class TimeOffServiceImpl implements TimeOffService {
 
     @Autowired
     TimeOffRepository timeOffRepository;
+
     @Override
-    public Boolean newTimeOff(TimeOffModel timeOffModel) throws Exception {
-      try {
-          timeOffRepository.saveTimeOff(timeOffModel.getId() , timeOffModel.getEmployeeCode(),timeOffModel.getDate(), timeOffModel.getReason(),timeOffModel.getReason());
-          return  true;
-      }catch (Exception e) {
-          throw new Exception("Failed to create");
-      }
+    public void newTimeOff(TimeOffModel timeOffModel) throws Exception {
+        try {
+            timeOffRepository.saveTimeOff(timeOffModel.getId(), timeOffModel.getEmployeeCode(), timeOffModel.getDate(), timeOffModel.getReason(), timeOffModel.getReason());
+        } catch (Exception e) {
+            throw new Exception("Failed to create");
+        }
     }
 
     @Override
-    public List<TimeOffModel> getAllTimeOff(int page , int limit) throws Exception {
+    public List<TimeOffModel> getAllTimeOff(int page, int limit) throws Exception {
         try {
             Pageable pageable = PageRequest.of(page, limit);
             return timeOffRepository.getAllTimeOff(pageable);
-        }catch (Exception e) {
-            throw  new RuntimeException("Get error: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("Get error: " + e.getMessage());
         }
     }
+
     @Override
     public List<TimeOffModel> getTimeOffByEmployeeCode(String empCode) throws Exception {
         try {
             return timeOffRepository.getTimeOffByEmployeeCode(empCode);
-        }catch (Exception e) {
-            throw  new RuntimeException("Get error: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("Get error: " + e.getMessage());
         }
     }
 
@@ -46,8 +47,8 @@ public class TimeOffServiceImpl implements TimeOffService {
     public long getCount() throws Exception {
         try {
             return timeOffRepository.count();
-        }catch (Exception e) {
-            throw  new RuntimeException("Error getting count" +e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting count" + e.getMessage());
         }
     }
 }
