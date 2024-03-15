@@ -45,6 +45,7 @@ public class FileUploadController {
             Path path = Paths.get(urlPath);
             Files.write(path, bytes);
             emp.get().setImagePath(urlPath);
+            employeeRepository.save(emp.get());
             return ResponseEntity.status(HttpStatus.OK).body(new Response<String>("Ok ", "Success"));
 
         } catch (IOException e) {
